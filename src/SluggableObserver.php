@@ -38,9 +38,9 @@ class SluggableObserver
      * @param \Illuminate\Database\Eloquent\Model $model
      * @return boolean|null
      */
-    public function saving(Model $model)
+    public function saved(Model $model)
     {
-        return $this->generateSlug($model, 'saving');
+        return $this->generateSlug($model, 'saved');
     }
 
     /**
