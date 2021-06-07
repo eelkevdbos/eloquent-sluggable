@@ -40,7 +40,12 @@ class SluggableObserver
      */
     public function saved(Model $model)
     {
-        return $this->generateSlug($model, 'saved');
+        if($this->generateSlug($model, 'saved')) {
+            $class = get_class($model);
+            $class::withoutEvents(function () use($model) {
+                $model->save();
+            });
+        }
     }
 
     /**
@@ -56,11 +61,10 @@ class SluggableObserver
         }
 
         $wasSlugged = $this->slugService->slug($model);
-        if ($wasSlugged) {
-            $model->save();
-        }
 
         $this->fireSluggedEvent($model, $wasSlugged);
+
+        return $wasSlugged;
     }
 
     /**
