@@ -54,7 +54,11 @@ class SluggableObserver
         if ($this->fireSluggingEvent($model, $event) === false) {
             return;
         }
+
         $wasSlugged = $this->slugService->slug($model);
+        if ($wasSlugged) {
+            $model->save();
+        }
 
         $this->fireSluggedEvent($model, $wasSlugged);
     }
